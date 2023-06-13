@@ -1,54 +1,45 @@
 <?php
+   // make sure the user is logged in
+   if ( !Auth::isUserLoggedIn() ) {
+    header("Location: /");
+      exit;
+  }
+  require "parts/header.php";
 
-function connectToDB() {
-    $host = 'mysql';
-    $dbname = 'php_docker';
-    $dbuser = 'root';
-    $dbpassword = 'secret';
+?>
+    <div class="container mx-auto my-5" style="max-width: 700px;">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h1 class="h1">Add New Post</h1>
+      </div>
+      <div class="card mb-2 p-4">
+        <form method="POST" action="posts/add">
+        <?php require "parts/error.php";?>
+          <div class="mb-3">
+            <label for="post-title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="post-title" name="title"/>
+          </div>
+          <div class="mb-3">
+            <label for="post-content" class="form-label">Content</label>
+            <textarea
+              class="form-control"
+              id="post-content"
+              rows="10"
+              name="content"
+            ></textarea>
+          </div>
+          <div class="text-end">
 
-    $database = new PDO (
-        "mysql:host=$host;dbname=$dbname",
-        $dbuser,
-        $dbpassword
-    );
+            <button type="submit" class="btn btn-primary">Add</button>
+          </div>
+        </form>
+      </div>
+      <div class="text-center">
+        <a href="/manage-posts" class="btn btn-link btn-sm"
+          ><i class="bi bi-arrow-left"></i> Back to Posts</a
+        >
+      </div>
+    </div>
 
-    return $database;
-}
+<?php
 
-// function to check if the user is currently logged in or not
-function isUserLoggedIn() {
-    return isset( $_SESSION['user'] ) ? true : false;
-}
-
-// function to check if the user is an admin
-function isAdmin() {
-    if ( isset( $_SESSION['user']['role'] ) && $_SESSION['user']['role'] === 'admin' ) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function isEditor() {
-    if ( isset( $_SESSION['user']['role'] ) && $_SESSION['user']['role'] === 'editor' ) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function isUser() {
-    if ( isset( $_SESSION['user']['role'] ) && $_SESSION['user']['role'] === 'user' ) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function isAdminOrEditor() {
-    return isAdmin() || isEditor() ? true : false;
-}
-
-function isEditorOrUser() {
-    return isUser() || isEditor() ? true : false;
-}
+    require "parts/footer.php";

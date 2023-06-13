@@ -93,6 +93,7 @@ class User
         if( isset ($error)){
             $_SESSION['error'] = $error;
             header("Location: /manage-users-add");    
+            exit;
         } 
             
         // if no error found, process to account creation
